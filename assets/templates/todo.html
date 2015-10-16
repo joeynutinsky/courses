@@ -1,0 +1,24 @@
+<div class="container" ng-controller="TodoCtrl">
+    <input type="text" class="" placeholder="Student ID" ng-model="formData.value">
+    <button type="submit" ng-click="getStudent()">Get</button>
+    <div id="todo-list" class="row">
+        <div class="col-sm-12">
+            <div>
+                    <b>Now Viewing:</b> {{activeStudent.name}}
+                    <br />
+                    <b>Courses:</b>
+                    <ul>
+                        <li ng-repeat="course in activeStudent.courses">{{course.courseId}} - {{course.name}} ({{course.credits}})</li>
+                    </ul>
+                    <b>Register for New Class: </b>&nbsp;
+                    <input type="text" class="" placeholder="Course ID" ng-model="formData.newCourse">
+                    <button type="submit" ng-click="addCourse()">Add</button>
+                    <br /><br /><br />
+                    <input type="text" class="" placeholder="Check Prerequisites" ng-model="formData.prereq">
+                    <button type="submit" ng-click="checkCourse(); showMessage();">Check</button>
+                    <br /><span ng-show="missingCourses.length>0">The following classes are missing:</span>
+                    <ul><li ng-repeat="course in missingCourses">{{course.courseId}} - {{course.name}}</li></ul>
+            </div>
+        </div>
+    </div>
+</div>

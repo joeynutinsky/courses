@@ -1,0 +1,10 @@
+<div class="container" ng-controller="CourseCtrl">
+    <input type="text" class="" placeholder="Course ID" ng-model="formData.courseId">
+    <input type="text" class="" placeholder="Name" ng-model="formData.name">
+    <input type="text" class="" placeholder="Credits" ng-model="formData.credits">
+    <button type="submit" ng-click="createCourse()">Get</button>
+    
+    <ul>
+        <li ng-repeat="class in course">{{class.courseId}} - {{class.name}} ({{class.credits}})</li>
+    </ul>
+</div>
