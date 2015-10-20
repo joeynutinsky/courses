@@ -10,10 +10,18 @@ todoApp.service('StudentService', function($http, $q) {
       });
       return defer.promise;
     },
-    'addCourse': function(todo) {
-      console.log(todo);
+    'addCourse': function(student, course) {
       var defer = $q.defer();
-      $http.put('/student/addCourse',todo).success(function(resp){
+      $http.post('/student/'+student+'/courses/'+course).success(function(resp){
+        defer.resolve(resp);
+      }).error( function(err) {
+        defer.reject(err);
+      });
+      return defer.promise;
+    },
+    'deleteCourse': function(course, student) {
+      var defer = $q.defer();
+      $http.delete('/student/'+student+'/courses/'+course).success(function(resp){
         defer.resolve(resp);
       }).error( function(err) {
         defer.reject(err);

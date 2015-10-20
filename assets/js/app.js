@@ -32,21 +32,50 @@ todoApp.controller('TodoCtrl', ['$scope', '$rootScope', 'TodoService', 'StudentS
   }
   
   $scope.addCourse = function() {
-    console.log("Text Entered: "+$scope.formData.newCourse);
-    var toPost = {};
-    toPost.studentId = $scope.activeStudent.studentId;
-    toPost.courseId = $scope.formData.newCourse;
-    StudentService.addCourse(toPost).then(function(response) {
-      console.log(response.name);
-      StudentService.findCourse(toPost.courseId).then(function(respC) {
-        $scope.activeStudent.courses.push(respC);
-      });
+    checkCoursePrereq($scope.formData.newCourse, function(missingCourses){
+      if(missingCourses.length==0)
+      {
+        console.log("Text Entered: "+$scope.formData.newCourse);
+        StudentService.addCourse($scope.activeStudent.studentId, $scope.formData.newCourse).then(function(response) {
+         $scope.activeStudent=response;
+        })
+      }
+      else{
+         var toAlert="Student is missing: ";
+         for(var a=0;a<missingCourses.length;a++)
+         {
+           toAlert+=missingCourses[a].courseId+" ";
+         }
+         alert(toAlert);
+      }
     })
+    
   }
   
-  
+  $scope.deleteCourse = function(toDelete){
+    for(var l=0;l<$scope.activeStudent.courses.length;l++)
+    {
+      var curCourse = $scope.activeStudent.courses[l];
+      console.log("checking "+curCourse.courseId);
+      if(curCourse.courseId==toDelete)
+      {
+        console.log("Found!");
+        $scope.activeStudent.courses.splice(l,1);
+        StudentService.deleteCourse(curCourse.courseId, $scope.activeStudent.studentId);
+        break;
+      }
+    }
+  }
   $scope.checkCourse = function() {
-    StudentService.findCourse($scope.formData.prereq).then(function(theCourse) {
+    checkCoursePrereq($scope.formData.prereq, function(theCourses){
+      console.log("HERE! "+theCourses[0].courseId);
+      $scope.missingCourses=theCourses;
+    });
+  }
+  
+  var checkCoursePrereq = function(courseId, callback)
+  {
+     StudentService.findCourse(courseId).then(function(theCourse) {
       var isQualified = false;
       var coursesNeeded = [];
       for(var i=0; i<theCourse.prerequisites.length;i++)
@@ -65,7 +94,7 @@ todoApp.controller('TodoCtrl', ['$scope', '$rootScope', 'TodoService', 'StudentS
           coursesNeeded.push(preReq)
         } 
       }
-      $scope.missingCourses = coursesNeeded;
+      callback(coursesNeeded);
     });
   }
 }])

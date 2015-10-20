@@ -1,14 +1,16 @@
 <div class="container" ng-controller="TodoCtrl">
-    <input type="text" class="" placeholder="Student ID" ng-model="formData.value">
-    <button type="submit" ng-click="getStudent()">Get</button>
+    <div class="studentInput">
+        <input type="text" class="" placeholder="Student ID" ng-model="formData.value">
+        <button type="submit" ng-click="getStudent()">Get</button>
+    </div>
     <div id="todo-list" class="row">
         <div class="col-sm-12">
             <div>
                     <b>Now Viewing:</b> {{activeStudent.name}}
                     <br />
                     <b>Courses:</b>
-                    <ul>
-                        <li ng-repeat="course in activeStudent.courses">{{course.courseId}} - {{course.name}} ({{course.credits}})</li>
+                    <ul id="coursesTaken">
+                        <li ng-repeat="course in activeStudent.courses">{{course.courseId}} - {{course.name}} ({{course.credits}})  <span ng-click="deleteCourse(course.courseId)" class="delete">[x]</span></li>
                     </ul>
                     <b>Register for New Class: </b>&nbsp;
                     <input type="text" class="" placeholder="Course ID" ng-model="formData.newCourse">

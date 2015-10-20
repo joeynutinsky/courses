@@ -1,0 +1,36 @@
+body{
+	font-family: "Helvetica", sans-serif;
+	color: darkslategrey;
+	background-color: cadetblue;
+}
+.studentInput{
+	padding-bottom: 10px;
+}
+.studentInput input[type=text]{
+	padding: 9px 5px 9px 5px;
+	font-size: 18px;
+	box-shadow: none;
+	border: none;
+	outline: none;
+}
+.studentInput button{
+	padding: 9px 5px 9px 5px;
+	font-size: 18px;
+}
+#coursesTaken{
+	list-style-type: none;
+	overflow: auto;
+}
+#coursesTaken li{
+	display: block;
+	float: left;
+	padding: 10px;
+	min-width: 100px;
+	min-height: 100px;
+	background-color: white;
+	margin: 5px;
+	border-radius: 5px;
+}
+.delete:hover{
+	cursor: pointer;
+}
