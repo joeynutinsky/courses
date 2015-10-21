@@ -1,7 +1,21 @@
 body{
 	font-family: "Helvetica", sans-serif;
-	color: darkslategrey;
-	background-color: cadetblue;
+	color: white;
+	background-color: #68829E;
+}
+.container{
+	margin-top: 35px;
+}
+.navBar{
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 35px;
+	width: 100%;
+	background-color: #AEBD38;
+}
+input[type=text]{
+	color: black;
 }
 .studentInput{
 	padding-bottom: 10px;
@@ -27,10 +41,53 @@ body{
 	padding: 10px;
 	min-width: 100px;
 	min-height: 100px;
-	background-color: white;
+	background-color: #AEBD38;
 	margin: 5px;
 	border-radius: 5px;
 }
 .delete:hover{
 	cursor: pointer;
+}
+
+.welcome{
+	width: 100%;
+	margin-top: 20%;
+	text-align: center;
+}
+
+.welcome span{
+	color: #505160;
+	font-size: 25px;
+}
+
+.welcome a{
+	display: inline-block;
+	padding: 20px;
+	background: #505160;
+	color: white;
+	width: 10%;
+}
+.welcome a:hover{
+	text-decoration: none;
+}
+.welcome input[type=text]{
+	text-align: center;
+	width: 70%;
+	padding-top: 2%;
+	padding-bottom: 2%;
+	outline: none;
+	border: none;
+	box-shadow: none;
+	background: none;
+	font-size: 20px;
+	border-bottom: 2px solid #505160;
+}
+#activeCourse{
+	position: fixed;
+	height: 100%;
+	background-color: #505160;
+	width: 20%;
+	right: 0;
+	top: 35px;
+	padding: 10px;
 }

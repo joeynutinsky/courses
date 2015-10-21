@@ -8,29 +8,51 @@ todoApp.config(['$routeProvider',
         templateUrl: '/templates/course.html',
         controller: 'CourseCtrl'
       })
-      .when('/students/:studentId?', {
-        templateUrl: '/templates/todo.html',
-        controller: 'TodoCtrl'
+      .when('/students/:studentId?/:courseId?', {
+        templateUrl: '/templates/student.html',
+        controller: 'StudentCtrl'
+      })
+      .when('/major/:majorId?', {
+        templateUrl: '/templates/major.html',
+        controller: 'MajorCtrl'
       })
       .otherwise({
-        redirectTo: '/',
+        templateUrl: '/templates/welcome.html',
+        controller: 'DefaultCtrl',
         caseInsensitiveMatch: true
       })
   }])
 
-todoApp.controller('TodoCtrl', ['$scope', '$rootScope', 'TodoService', 'StudentService', function($scope, $rootScope, TodoService, StudentService) {
+todoApp.controller('DefaultCtrl', ['$scope', function($scope){
+  
+}])
+
+
+todoApp.controller('StudentCtrl', ['$scope', '$routeParams', '$rootScope', '$http', 'StudentService', function($scope, $routeParams, $rootScope, $http, StudentService) {
   $scope.formData = {};
   $scope.activeStudent;
+  $scope.activeCourse;
   
-  $scope.getStudent = function() {
-    console.log($scope.formData);
-    StudentService.getStudent($scope.formData).then(function(response) {
-      console.log(response.name);
-      $scope.activeStudent = response;
-      $scope.formData = {};
+  if($routeParams.courseId != null)
+  {
+    $http.get('/course/'+$routeParams.courseId).success(function(resp) {
+      $scope.activeCourse = resp;
     })
   }
+  $http.get('/student/'+$routeParams.studentId).success(function(resp){
+    $scope.activeStudent = resp;
+  });
   
+  $scope.highlightCourse = function(course)
+  {
+    $http.get('/course/'+course).success(function(resp) {
+      $scope.activeCourse = resp;
+    })
+  }
+  $scope.closeCourseView = function()
+  {
+    $scope.activeCourse = null;
+  }
   $scope.addCourse = function() {
     checkCoursePrereq($scope.formData.newCourse, function(missingCourses){
       if(missingCourses.length==0)
@@ -49,28 +71,16 @@ todoApp.controller('TodoCtrl', ['$scope', '$rootScope', 'TodoService', 'StudentS
          alert(toAlert);
       }
     })
-    
+  }
+  
+  $scope.goBack = function (){
+    window.history.back();
   }
   
   $scope.deleteCourse = function(toDelete){
-    for(var l=0;l<$scope.activeStudent.courses.length;l++)
-    {
-      var curCourse = $scope.activeStudent.courses[l];
-      console.log("checking "+curCourse.courseId);
-      if(curCourse.courseId==toDelete)
-      {
-        console.log("Found!");
-        $scope.activeStudent.courses.splice(l,1);
-        StudentService.deleteCourse(curCourse.courseId, $scope.activeStudent.studentId);
-        break;
-      }
-    }
-  }
-  $scope.checkCourse = function() {
-    checkCoursePrereq($scope.formData.prereq, function(theCourses){
-      console.log("HERE! "+theCourses[0].courseId);
-      $scope.missingCourses=theCourses;
-    });
+    StudentService.deleteCourse(toDelete, $scope.activeStudent.studentId).then(function(response){
+      $scope.activeStudent=response;
+    })
   }
   
   var checkCoursePrereq = function(courseId, callback)
@@ -113,5 +123,21 @@ todoApp.controller('CourseCtrl', ['$scope', '$rootScope', 'CourseService', funct
     CourseService.addCourse($scope.formData).then(function(response) {
        $scope.course.push($scope.formData);
     })
+  }
+}])
+
+todoApp.controller('MajorCtrl', ['$scope', '$rootScope', 'MajorService', function($scope, $rootScope, MajorService) {
+  $scope.formData = {};
+  $scope.data = {};
+  
+  MajorService.getMajor().then(function(response){
+    $scope.data.major = response;
+  });
+  $scope.getCoursesForMajor = function() {
+    var maj =$scope.data.majorSelect;
+    $scope.data.courses = [];
+    MajorService.getCoursesForMajor(maj).then(function (response){
+      $scope.data.courses = response;
+    });
   }
 }])

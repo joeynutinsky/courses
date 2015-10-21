@@ -1,7 +1,7 @@
 /**
- * StudentController
+ * MajorController
  *
- * @description :: Server-side logic for managing Students
+ * @description :: Server-side logic for managing Majors
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 

@@ -1,0 +1,9 @@
+<div class="container" ng-controller="CourseCtrl">
+	<select name="majorSelect" id="majorSelect" ng-model="data.majorSelect" ng-change="getCoursesForMajor()">
+		<option default selected value="-1">Choose Major</option>
+		<option ng-repeat="majors in data.major" value="{{majors.id}}">{{majors.name}}</option>
+	</select>
+	<ul>
+		<li ng-repeat="course in data.courses">{{course.name}}</li>
+	</ul>
+</div>
