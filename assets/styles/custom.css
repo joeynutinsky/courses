@@ -4,15 +4,17 @@ body{
 	background-color: #68829E;
 }
 .container{
-	margin-top: 35px;
+	margin-top: 45px;
 }
 .navBar{
 	position: fixed;
 	top: 0;
 	left: 0;
-	height: 35px;
+	height: 45px;
 	width: 100%;
-	background-color: #AEBD38;
+	background-color: #505160;
+	padding-top: 10px;
+	padding-left: 15px;
 }
 input[type=text]{
 	color: black;
@@ -41,7 +43,8 @@ input[type=text]{
 	padding: 10px;
 	min-width: 100px;
 	min-height: 100px;
-	background-color: #AEBD38;
+	background-color: #fff;
+	color: #505160;
 	margin: 5px;
 	border-radius: 5px;
 }
@@ -85,9 +88,16 @@ input[type=text]{
 #activeCourse{
 	position: fixed;
 	height: 100%;
-	background-color: #505160;
+	background-color: #fff;
+	color: #505160;
 	width: 20%;
 	right: 0;
-	top: 35px;
+	top: 45px;
 	padding: 10px;
+}
+.link{
+	text-decoration: underline;
+}
+.link:hover{
+	cursor: pointer;
 }

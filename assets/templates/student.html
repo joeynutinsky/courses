@@ -1,6 +1,6 @@
 <div class="container" ng-controller="StudentCtrl">
     <div class="studentInput">
-       <span ng-click="goBack()">Back to Search</span>
+       <span ng-click="goBack()" class="link">Back to Search</span>
     </div>
     <div id="todo-list" class="row">
         <div class="col-sm-12">
@@ -21,7 +21,7 @@
     
     <div id="activeCourse" ng-model="activeCourse" ng-show="activeCourse != null">
         <b>Course Viewer</b><br />
-        <span ng-click="closeCourseView()">Close</span>
+        <span ng-click="closeCourseView()" class="link">Close</span>
         <br /><br /><br />
         Course: <b>{{activeCourse.courseId}} - {{activeCourse.name}}</b>
         <br />
