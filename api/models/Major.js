@@ -9,6 +9,10 @@ module.exports = {
 
   attributes: {
     name: 'text',
+    id: {
+      primaryKey: true,
+      'type': 'text'
+    },
     abbreviation: 'text',
     courses: {
       collection: 'course'

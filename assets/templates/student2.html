@@ -1,15 +1,15 @@
-<div class="container" ng-controller="StudentCtrl">
+<div class="container" ng-controller="StudentCtrl2" ng-click="closeCourseView()">
     <div class="studentInput">
        <a href="/" class="link">Back to Search</a>
     </div>
     <div id="todo-list" class="row">
         <div class="col-sm-12">
             <div>
-                    <i class="fa fa-user"></i>&nbsp;&nbsp;<b>Now Viewing:</b> {{activeStudent.name}}
-                    <br /><br />
+                    <b>Now Viewing:</b> {{activeStudent.name}}
+                    <br />
                     <b>Courses:</b>
                     <ul id="coursesTaken">
-                        <li ng-repeat="course in activeStudent.courses | orderBy:'courseId'" ng-click="highlightCourse(course.courseId)"><span ng-click="deleteCourse(course.courseId)" class="delete"><i class="fa fa-times-circle"></i></span>{{course.courseId}} - {{course.name}} ({{course.credits}})</li>
+                        <li ng-repeat="course in activeStudent.courses" ng-click="highlightCourse(course.courseId)"><span ng-click="deleteCourse(course.courseId)" class="delete">[x]</span>{{course.courseId}} - {{course.name}} ({{course.credits}})</li>
                     </ul>
                     <br /><br />
                     <b>Course Search: </b>&nbsp;
@@ -27,32 +27,26 @@
     <div id="activeCourse" ng-model="activeCourse" ng-if="activeCourse != null">
         <div id="activeTitle">
             Course Viewer
-            <span ng-click="closeCourseView()" class="closeBtn link"><i class="fa fa-times-circle"></i></span>
+            <span ng-click="closeCourseView()" class="closeBtn link">Close</span>
             </div>
         <div id="activeContent">
         <span class="backLink link" ng-repeat="history in courseHistory" ng-show="courseHistory.length > 0"><span ng-click="courseBack()" ng-show="$last">&larr; {{history.courseId}} <br /></span></span>
         <br />
-        <span class="activeHead">{{activeCourse.courseId}} - {{activeCourse.name}}</span>
+        <b>{{activeCourse.courseId}} - {{activeCourse.name}}</b>
         <br /><br />
         Credits: <b>{{activeCourse.credits}}</b>
         <br /><br />
-        
+        <div ng-hide="checkCourse(activeCourse.courseId)">
+        <span class="button" ng-click="addCourse(activeCourse.courseId)" >Add to Schedule</span>
+        <br /><br/ >
+        </div>
         <div ng-show="activeCourse.prerequisites.length>0">
         Prerequisites: 
         <br />
         <ul>
             <li ng-repeat="prereq in activeCourse.prerequisites" ng-click="highlightCourse(prereq.courseId)" class="link">{{prereq.courseId}}</li>
         </ul>
-        <br />
         </div>
-        Students Enrolled:
-        <ul>
-            <li ng-show="otherStudents.length==0">No Students Currently Enrolled</li>
-            <li ng-repeat="student in otherStudents">{{student.name}}</li>
-        </ul>
-        <br />
-        <span ng-hide="checkCourse(activeCourse.courseId)" class="button" ng-click="addCourse(activeCourse.courseId)" ><i class="fa fa-plus-square"></i>&nbsp;&nbsp;Add to Schedule</span>
-        <span ng-show="checkCourse(activeCourse.courseId)" class="button disabled" ><i class="fa fa-plus-square"></i>&nbsp;&nbsp;Registered</span>
         </div>
     </div>
 </div>

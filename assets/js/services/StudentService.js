@@ -1,9 +1,9 @@
-todoApp.service('StudentService', function($http, $q) {
+courseApp.service('StudentService', function($http, $q) {
   return {
     'getStudent': function(todo) {
       console.log(todo);
       var defer = $q.defer();
-      $http.get('/student/'+todo.value).success(function(resp){
+      $http.get('/student/'+todo).success(function(resp){
         defer.resolve(resp);
       }).error( function(err) {
         defer.reject(err);
@@ -33,6 +33,24 @@ todoApp.service('StudentService', function($http, $q) {
       $http.get('/course/'+findCourse).success(function(resp){
         defer.resolve(resp);
       }).error( function(err) {
+        defer.reject(err);
+      });
+      return defer.promise;
+    },
+    'addStudent': function(student){
+      var defer = $q.defer();
+      $http.post('/student', student).success(function(resp){
+        defer.resolve(resp);
+      }).error(function(err){
+        defer.reject(err);
+      });
+      return defer.promise;
+    },
+    'findStudents': function(course){
+      var defer = $q.defer();
+      $http.get('/student/studentsWithClass?courseId='+course).success(function(resp){
+        defer.resolve(resp);
+      }).error(function(err){
         defer.reject(err);
       });
       return defer.promise;

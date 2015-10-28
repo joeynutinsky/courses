@@ -1,4 +1,4 @@
-todoApp.service('CourseService', function($http, $q) {
+courseApp.service('CourseService', function($http, $q) {
   return {
     'getCourse': function() {
       var defer = $q.defer();

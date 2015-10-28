@@ -15,7 +15,24 @@ module.exports = {
       },
       courses: {
         collection: 'Course'
+      },
+      major: {
+        model: 'Major'
+      },
+      isMarried: function () {
+      return this.major;
+    },
+    hasCourse: function (course){
+      for(var i=0;i<this.courses.length;i++)
+      {
+        if(course==this.courses[i].courseId)
+        {
+          return true;
+        }
       }
+      return false;
+    },
+      
   }
 };
 

@@ -31,7 +31,7 @@ module.exports.routes = {
   * `assets` directory)                                                      *
   *                                                                          *
   ***************************************************************************/
-
+  'GET /search/:studentId': 'SearchController.loadNew',
   '/': {
     view: 'homepage'
   }

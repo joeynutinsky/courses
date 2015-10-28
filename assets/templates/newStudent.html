@@ -1,0 +1,11 @@
+<div class="container" ng-controller="NewStudentCtrl">
+	<input type="text" ng-model="student.studentId" placeholder="Student ID">
+	<br />
+	<input type="text" ng-model="student.name" placeholder="Name">
+	<br />
+	<select name="majorSelect" id="majorSelect" ng-model="student.major">
+		<option ng-repeat="major in majors" value="{{major.id}}">{{major.name}}</option>
+	</select>
+	<br /><br />
+	<span class="button" ng-click="createStudent()">Create Student</span>
+</div>
