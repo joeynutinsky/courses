@@ -1,11 +1,14 @@
 body{
-	font-family: 'Roboto Condensed', sans-serif;	
+	font-family: 'Roboto Condensed', sans-serif;
 	color: white;
 	background-color: #68829E;
 	font-size: 18px;
 }
-.container{
+
+#mainContent{
+	width: 80%;
 	margin-top: 45px;
+	padding-left: 15px;
 }
 h1{
 	padding: none;
@@ -44,11 +47,12 @@ input[type=text]{
 	padding: 9px 5px 9px 5px;
 	font-size: 18px;
 }
-#coursesTaken{
+
+.card{
 	list-style-type: none;
 	overflow: auto;
 }
-#coursesTaken li{
+.card li{
 	display: block;
 	float: left;
 	padding: 10px;
@@ -58,6 +62,11 @@ input[type=text]{
 	color: #505160;
 	margin: 5px;
 	border-radius: 5px;
+	box-shadow: 1px 1px 10px 1px #505160;
+}
+.card li:hover{
+	cursor: pointer;
+	box-shadow: 2px 2px 10px 2px #505160;
 }
 .delete{
 	display: block;
@@ -140,6 +149,9 @@ input[type=text]{
 	float: right;
 	margin-right: 10px;
 }
+.delete i:hover{
+	color: black;
+}
 .backLink{
 	font-style: italic;
 }
@@ -155,4 +167,38 @@ input[type=text]{
 }
 a{
 	color: white;
+}
+
+#suggestion{
+	position: fixed;
+	width: 30%;
+	left: 15px;
+	bottom: 0px;
+	padding: 15px;
+	background-color: white;
+	color: black;
+	border-radius: 5px 5px 0px 0px;
+}
+
+#courseSearchResultsContainer{
+	position: absolute;
+	width: 200px;
+	height: auto;
+	top: 70px;
+	left: 20px;
+	background-color: white;
+	z-index: 500;
+	border: 1px solid black;
+}
+#courseSearchResults{
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+#courseSearchResults li{
+	border-bottom: 1px solid black;
+}
+#courseSearchResults li:hover{
+	background-color: lightblue;
+	cursor: pointer;
 }

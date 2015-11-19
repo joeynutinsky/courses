@@ -54,5 +54,14 @@ courseApp.service('StudentService', function($http, $q) {
         defer.reject(err);
       });
       return defer.promise;
+    },
+    'searchCourse': function(search){
+      var defer = $q.defer();
+      $http.get('/course/findCourse?query='+search).success(function(resp){
+        defer.resolve(resp);
+      }).error(function(err){
+        defer.reject(err);
+      });
+      return defer.promise;
     }
   }})

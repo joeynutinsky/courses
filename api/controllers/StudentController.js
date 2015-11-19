@@ -36,7 +36,6 @@ module.exports = {
           if(student[s].courses[c].courseId==course)
           {
             students.push(student[s]);
-            console.log(students.length);
           }
         }
       }

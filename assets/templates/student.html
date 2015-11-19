@@ -1,51 +1,60 @@
-<div class="container" ng-controller="StudentCtrl">
+<div class="" ng-controller="StudentCtrl">
     <div class="studentInput">
        <a href="/" class="link">Back to Search</a>
     </div>
-    <div id="todo-list" class="row">
-        <div class="col-sm-12">
-            <div>
-                    <i class="fa fa-user"></i>&nbsp;&nbsp;<b>Now Viewing:</b> {{activeStudent.name}}
-                    <br /><br />
-                    <b>Courses:</b>
-                    <ul id="coursesTaken">
-                        <li ng-repeat="course in activeStudent.courses | orderBy:'courseId'" ng-click="highlightCourse(course.courseId)"><span ng-click="deleteCourse(course.courseId)" class="delete"><i class="fa fa-times-circle"></i></span>{{course.courseId}} - {{course.name}} ({{course.credits}})</li>
-                    </ul>
-                    <br /><br />
-                    <b>Course Search: </b>&nbsp;
-                    <input type="text" class="" placeholder="Course ID" ng-model="formData.newCourse">
-                    <button type="submit" ng-click="highlightCourse(formData.newCourse)">Search</button>
-                    <br /><br />
-                    <b>Remaining in Major: </b>{{activeStudent.major.name}}
-                    <ul id="coursesLeft">
-                        <li ng-repeat="course in remainingClasses | orderBy:'courseId'" ng-if="checkCourse(course.courseId)==false"><span class="link" ng-click="highlightCourse(course.courseId)">{{course.courseId}} - {{course.name}}</span></li>
-                    </ul>
-            </div>
-        </div>
+    <div id="mainContent">
+
+        <i class="fa fa-user"></i>&nbsp;&nbsp;<b>Now Viewing:</b> {{activeStudent.name}}
+        <br /><br />
+        <b>Courses:</b>
+        <ul id="coursesTaken" class="card">
+            <li class="courseCard" ng-if="activeStudent.courses.length==0"><i>No Courses Currently Assigned</i></li>
+            <li class="courseCard" ng-repeat="course in activeStudent.courses | orderBy:'courseId'" ng-click="highlightCourse(course.courseId)"><span ng-click="deleteCourse(course.courseId)" class="delete"><i class="fa fa-times-circle"></i></span>{{course.courseId}} - {{course.name}} ({{course.credits}})</li>
+        </ul>
+        <br /><br />
+        <b>Major Report: </b> <select ng-model="major" ng-options="major.name for major in majors"></select><br /><br />
+        <div ng-if="major!=undefined">
+        Major: <b>{{major.name}}</b><br />
+        Percent Complete: <b>{{majorComplete(major)}}%</b><br />
+        Remaining Courses:
+        <ul id="coursesLeft" class="card">
+            <li class="courseCard" ng-repeat="course in major.courses | orderBy:'courseId'" ng-if="checkCourse(course.courseId)==false" ng-click="highlightCourse(course.courseId)">{{course.courseId}} - {{course.name}}</li>
+        </ul>
+      </div>
     </div>
-    
-    <div id="activeCourse" ng-model="activeCourse" ng-if="activeCourse != null">
+    <div id="suggestion" ng-if="majorComplete(majorRec())>=50">
+        <b>Still Undecided?</b><br />
+        We'd reccomend looking at <span class="link" ng-click="viewMajor()">{{majorRec().name}}</span>.
+        <br />
+        <i>You're already {{majorComplete(majorRec())}}% done this major.</i>
+    </div>
+    <div id="activeCourse" ng-if="activeCourse != null">
         <div id="activeTitle">
             Course Viewer
             <span ng-click="closeCourseView()" class="closeBtn link"><i class="fa fa-times-circle"></i></span>
             </div>
         <div id="activeContent">
+            <input type="text" ng-model="search.query" ng-change="autoComplete()" ng-click="search.showAuto=true" style="width:100%" placeholder="Course Search"><br />
+            <div id="courseSearchResultsContainer" ng-if="search.showAuto==true && search.query.length>0">
+                <ul id="courseSearchResults">
+                    <li ng-repeat="course in search.results" ng-click="highlightCourse(course.courseId);search.showAuto=false;">{{course.courseId}} - {{course.name}}</li>
+                </ul>
+            </div>
         <span class="backLink link" ng-repeat="history in courseHistory" ng-show="courseHistory.length > 0"><span ng-click="courseBack()" ng-show="$last">&larr; {{history.courseId}} <br /></span></span>
         <br />
         <span class="activeHead">{{activeCourse.courseId}} - {{activeCourse.name}}</span>
         <br /><br />
         Credits: <b>{{activeCourse.credits}}</b>
         <br /><br />
-        
         <div ng-show="activeCourse.prerequisites.length>0">
-        Prerequisites: 
+        Prerequisites:
         <br />
         <ul>
             <li ng-repeat="prereq in activeCourse.prerequisites" ng-click="highlightCourse(prereq.courseId)" class="link">{{prereq.courseId}}</li>
         </ul>
         <br />
         </div>
-        Students Enrolled:
+        Students Enrolled ({{otherStudents.length}}):
         <ul>
             <li ng-show="otherStudents.length==0">No Students Currently Enrolled</li>
             <li ng-repeat="student in otherStudents">{{student.name}}</li>

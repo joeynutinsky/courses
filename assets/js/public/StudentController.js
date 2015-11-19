@@ -5,8 +5,9 @@ courseApp.controller('StudentCtrl', ['$scope', '$routeParams', '$http', 'Student
   $scope.courseHistory = [];
   $scope.remainingClasses = [];
   $scope.otherStudents = [];
+  $scope.search = {};
+  $scope.majors = [];
 
-  
   if($routeParams.courseId != null)
   {
     $http.get('/course/'+$routeParams.courseId).success(function(resp) {
@@ -20,7 +21,24 @@ courseApp.controller('StudentCtrl', ['$scope', '$routeParams', '$http', 'Student
         $scope.remainingClasses.push(resp2[i]);
     });
   });
-  
+  $http.get('/major').success(function(response){
+    $scope.majors=response;
+  });
+
+  $scope.autoComplete = function()
+  {
+    if($scope.search.showAuto!=true)
+      $scope.search.showAuto = true;
+    StudentService.searchCourse($scope.search.query).then(function(response){
+      console.log($scope.search.showAuto);
+      $scope.search.results = response;
+    })
+  }
+
+  $scope.resetSearch = function() {
+    $scope.search.query='';
+  }
+
   $scope.highlightCourse = function(course, backCourse)
   {
     if($scope.activeCourse!=null && backCourse==null)
@@ -28,28 +46,28 @@ courseApp.controller('StudentCtrl', ['$scope', '$routeParams', '$http', 'Student
         $scope.courseHistory.push($scope.activeCourse);
         console.log($scope.courseHistory.length);
       }
-      
+
     $http.get('/course/'+course).success(function(resp) {
       $scope.activeCourse = resp;
     })
-    
+
     StudentService.findStudents(course).then(function(response){
       $scope.otherStudents = response;
     })
-    
+
   }
-  
+
   $scope.courseBack = function()
   {
     $scope.highlightCourse($scope.courseHistory.pop().courseId, 1);
   }
-  
+
   $scope.closeCourseView = function()
   {
     $scope.activeCourse = null;
     $scope.courseHistory = [];
   }
-  
+
   $scope.addCourse = function(newCourse) {
     if(newCourse==null)
     {
@@ -75,18 +93,18 @@ courseApp.controller('StudentCtrl', ['$scope', '$routeParams', '$http', 'Student
       }
     })
   }
-  
+
   $scope.goBack = function (){
     window.history.back();
   }
-  
+
   $scope.deleteCourse = function(toDelete){
     StudentService.deleteCourse(toDelete, $scope.activeStudent.studentId).then(function(response){
       $scope.activeStudent=response;
     })
   }
- 
-  
+
+
   $scope.checkCourse = function(courseId)
   {
     var takenCourse = false;
@@ -98,6 +116,39 @@ courseApp.controller('StudentCtrl', ['$scope', '$routeParams', '$http', 'Student
       }
     }
     return takenCourse;
+  }
+
+  $scope.majorComplete = function(major)
+  {
+    var totalInMajor = major.courses.length;
+    var takenInMajor = 0;
+    console.log("MAJOR: "+major.name+" | Total: "+totalInMajor);
+    for(var i=0;i<totalInMajor;i++){
+      if($scope.checkCourse(major.courses[i].courseId))
+      {
+        takenInMajor++;
+        console.log(takenInMajor);
+      }
+    }
+
+    return (takenInMajor/totalInMajor*100).toFixed(2);
+  }
+
+  $scope.majorRec = function()
+  {
+    var bestMajor=$scope.majors[0];
+    for(var i=1;i<$scope.majors.length;i++)
+    {
+      if($scope.majorComplete(bestMajor)<$scope.majorComplete($scope.majors[i]))
+      {
+        bestMajor = $scope.majors[i];
+      }
+    }
+    return bestMajor;
+  }
+  $scope.viewMajor = function()
+  {
+    $scope.major = $scope.majorRec();
   }
   var checkCoursePrereq = function(courseId, callback)
   {
@@ -118,7 +169,7 @@ courseApp.controller('StudentCtrl', ['$scope', '$routeParams', '$http', 'Student
         if(!isQualified)
         {
           coursesNeeded.push(preReq)
-        } 
+        }
       }
       callback(coursesNeeded);
     });
